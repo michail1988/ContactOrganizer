@@ -18,7 +18,7 @@ import android.widget.TextView;
 public class SmsItemActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    EditText smsText;
+    EditText smsContent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,14 +45,18 @@ public class SmsItemActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        smsText = (EditText)findViewById(R.id.itemText);
+        smsContent = (EditText)findViewById(R.id.smsContent);
 
 
         Bundle bundle = getIntent().getExtras();
         String value; // or other values
         if(bundle != null) {
             value = bundle.getString("item");
-            smsText.setText(value);
+
+            if (smsContent != null) {
+                smsContent.setText(value);
+            }
+
         }
 
     }

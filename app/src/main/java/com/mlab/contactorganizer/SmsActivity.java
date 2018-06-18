@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.mlab.contactorganizer.connect.ServerConnector;
+import com.mlab.contactorganizer.services.SendingService;
 
 public class SmsActivity extends AppCompatActivity {
 
@@ -19,6 +20,9 @@ public class SmsActivity extends AppCompatActivity {
 
 
         smsText = (EditText)findViewById(R.id.smsText);
+
+        //Intent intent = new Intent(this, SendingService.class);
+        //startService(intent);
     }
 
 

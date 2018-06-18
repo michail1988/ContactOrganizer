@@ -10,4 +10,8 @@
 
     <string name="action_settings">Settings</string>
     <string name="title_activity_sms_item">SmsItemActivity</string>
+    <string name="title_activity_main_navigation">MainNavigationActivity</string>
+    <string name="title_activity_forgot_password">ForgotPasswordActivity</string>
+
+    <string name="sendPassword">Wyślij hasło</string>
 </resources>

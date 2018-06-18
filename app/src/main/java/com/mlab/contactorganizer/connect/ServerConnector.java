@@ -40,14 +40,28 @@ import cz.msebera.android.httpclient.message.BasicNameValuePair;
 public class ServerConnector {
 
     public static final String SERVER_ADDRESS = "http://10.0.2.2:2000/users";
-    public static final String SMS_ADDRESS = "http://192.168.1.6:3000/sms";
 
     //public static final String LOGIN_ADDRESS = "http://77.55.218.181:2000/login";
 
     //public static final String CREATE_USER = "http://77.55.218.181:2000/user";
 
     public static final String CREATE_USER = "https://papamobile.cc/smsgateway/api/user";
-    public static final String LOGIN_ADDRESS = "https://papamobile.cc/smsgateway/api/user";
+    public static final String LOGIN_ADDRESS = "https://papamobile.cc/api/smsgateway/server/token";
+
+
+
+    //TODO
+    public static final String PASSWORD_FORGOT = "https://papamobile.cc/smsgateway/api/user";
+
+    //kolejka sms
+    public static final String TO_SEND = "https://papamobile.cc/api/smsgateway/server/outbox";
+
+    public static final String SMS_ADDRESS = "http://77.55.218.181:2000/sms";
+
+    //public static final String TO_SEND = "http://77.55.218.181:2000/to_send";
+
+    public static final String SMS_SENT = "https://papamobile.cc/api/smsgateway/server/outbox/sent";
+
 
     private final HttpPost post;
 

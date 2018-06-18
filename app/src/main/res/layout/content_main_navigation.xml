@@ -5,13 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.mlab.contactorganizer.SmsItemActivity"
-    tools:showIn="@layout/app_bar_sms_item">
+    tools:context="com.mlab.contactorganizer.MainNavigationActivity"
+    tools:showIn="@layout/app_bar_main_navigation">
 
-    <EditText
-        android:id="@+id/smsContent"
-        android:layout_width="80dp"
-        android:layout_height="80dp" />
-
-
+    <FrameLayout
+        android:id="@+id/content_frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </FrameLayout>
 </android.support.constraint.ConstraintLayout>

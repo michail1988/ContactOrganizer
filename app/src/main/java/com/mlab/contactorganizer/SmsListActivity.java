@@ -4,6 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -13,9 +16,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -82,8 +89,9 @@ public class SmsListActivity extends AppCompatActivity
         ArrayList smsList = fetchSmsList();
         if(smsList!=null)
         {
+            final MyListAdapter myListAdapter = new MyListAdapter();
             final ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, smsList);
-            listViewSMS.setAdapter(adapter);
+            listViewSMS.setAdapter(myListAdapter);
 
             /**
              * hint w dymku
@@ -201,6 +209,81 @@ public class SmsListActivity extends AppCompatActivity
         intent.putExtras(bundle); //Put your id to your next Intent
 
         startActivity(intent);
+
+    }
+
+    private String[] arrText =
+            new String[]{"Text1","Text2","Text3","Text4"
+                    ,"Text5","Text6","Text7","Text8","Text9","Text10"
+                    ,"Text11","Text12","Text13","Text14","Text15"
+                    ,"Text16","Text17","Text18","Text19","Text20"
+                    ,"Text21","Text22","Text23","Text24"};
+    private String[] arrTemp;
+
+    private class MyListAdapter extends BaseAdapter {
+
+        @Override
+        public int getCount() {
+            // TODO Auto-generated method stub
+            if(arrText != null && arrText.length != 0){
+                return arrText.length;
+            }
+            return 0;
+        }
+
+        @Override
+        public Object getItem(int position) {
+            // TODO Auto-generated method stub
+            return arrText[position];
+        }
+
+        @Override
+        public long getItemId(int position) {
+            // TODO Auto-generated method stub
+            return position;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+
+            //ViewHolder holder = null;
+            final ViewHolder holder;
+            if (convertView == null) {
+
+                holder = new ViewHolder();
+                LayoutInflater inflater = SmsListActivity.this.getLayoutInflater();
+                convertView = inflater.inflate(R.layout.list_item, null);
+                holder.timeText = (TextView) convertView.findViewById(R.id.timeText);
+                holder.smsText = (TextView) convertView.findViewById(R.id.smsText);
+
+                convertView.setTag(holder);
+
+            } else {
+
+                holder = (ViewHolder) convertView.getTag();
+            }
+
+            holder.ref = position;
+
+            //holder.timeText.setText(arrText[position]);
+            holder.smsText.setText(arrText[position]);
+
+            holder.smsText.setOnClickListener(new AdapterView.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    navigateItem(holder.smsText.getText());
+                }
+            });
+
+            return convertView;
+        }
+
+        private class ViewHolder {
+            TextView timeText;
+            TextView smsText;
+            int ref;
+        }
+
 
     }
 }

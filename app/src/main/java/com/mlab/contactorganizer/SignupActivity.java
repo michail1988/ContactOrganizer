@@ -15,7 +15,11 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.mlab.contactorganizer.io.StoreManager;
+import com.mlab.contactorganizer.obj.UserObj;
 import com.mlab.contactorganizer.connect.ServerConnector;
+import com.mlab.contactorganizer.connect.SslManager;
+import com.mlab.contactorganizer.utils.NavigationUtil;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -83,6 +87,9 @@ public class SignupActivity extends AppCompatActivity {
         final String email = _emailText.getText().toString();
         final String password = _passwordText.getText().toString();
 
+        SslManager sslManager = new SslManager();
+        sslManager.trustEveryone();
+
         StringRequest loginRequest = new StringRequest(Request.Method.POST, ServerConnector.CREATE_USER, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -94,7 +101,10 @@ public class SignupActivity extends AppCompatActivity {
 
                     if (obj.get("status") != null) {
                         if (obj.get("status").equals(1)) {
-                            onSignupSuccess();
+                            UserObj userObj = createUserObj(obj);
+                            //TODO rzuc i obsluz wyjatek
+
+                            onSignupSuccess(userObj);
                         }
 
                         if (obj.get("status").equals(2)) {
@@ -104,6 +114,7 @@ public class SignupActivity extends AppCompatActivity {
 
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    onSignupFailed();
                 }
 
             }
@@ -135,6 +146,32 @@ public class SignupActivity extends AppCompatActivity {
                     }
                 }, 3000);
                 */
+    }
+
+    ////{"status":1,"message":"User created","error_code":0,"details":{"user_id":2}}
+    private UserObj createUserObj(JSONObject obj) {
+        UserObj userObj = new UserObj();
+
+        userObj.setName(_nameText.getText().toString());
+        userObj.setPassword(_passwordText.getText().toString());
+        userObj.setEmail(_emailText.getText().toString());
+
+        try {
+            JSONObject detailsObj = obj.getJSONObject("details");
+
+            if (detailsObj != null) {
+                userObj.setId(detailsObj.getString("user_id"));
+                userObj.setToken(detailsObj.getString("token"));
+            } else {
+                //TODO oblsuga bledu
+            }
+
+            userObj.setToken(obj.getString("token"));
+        } catch (JSONException e) {
+            //TODO obsluga bledu
+            Log.e("SignupActivity", e.getMessage(), e);
+        }
+        return userObj;
     }
 
 
@@ -175,17 +212,16 @@ public class SignupActivity extends AppCompatActivity {
         _signupButton.setEnabled(true);
     }
 
-    public void onSignupSuccess() {
+    public void onSignupSuccess(UserObj userObj) {
         _signupButton.setEnabled(true);
         setResult(RESULT_OK, null);
         finish();
-        navigateSms();
-    }
 
-    private void navigateSms() {
-        Intent intent = new Intent(this, SmsActivity.class);
-        startActivity(intent);
 
+        StoreManager storeManager = new StoreManager();
+        storeManager.saveUserData(userObj, this);
+
+        NavigationUtil.navigateSms(this);
     }
 
 }
